@@ -45,10 +45,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> searchProductsByName(String string) {
-        log.info("Searching products by name {}", string);
+    public List<ProductResponse> searchProductsByName(String s) {
+        log.info("Searching products by name {}", s);
         //custom query method
-        List<Product> products = productRepository.searchByName(string);
+        List<Product> products = productRepository.searchByName(s);
         //Map
         List<ProductResponse> productResponses = products.stream()
                 .map(this::convertToProductResponse)

@@ -21,10 +21,14 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public List<BrandResponse> getAllBrands() {
+        log.info("Fetching all Brands!!!");
+        //Fetch Brands from DB
         List<Brand> brandList = brandRepository.findAll();
+        //now use stream operator to map with response
         List<BrandResponse> brandResponses = brandList.stream()
                 .map(this::convertToBrandResponse)
                 .collect(Collectors.toList());
+        log.info("Fetched all brands!!!");
         return brandResponses;
     }
     private BrandResponse convertToBrandResponse(Brand brand){

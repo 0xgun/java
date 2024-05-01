@@ -38,6 +38,7 @@ INSERT INTO Type (Name) VALUES
                             ('Rackets'),
                             ('Football'),
                             ('Kit Bags');
+                            {}
 
 -- Create the Product table
 CREATE TABLE `Product` (

@@ -23,7 +23,8 @@ public class Product {
     private String description;
     @Column(name="Price")
     private Long price;
-
+    @Column(name="PictureUrl")
+    private String pictureUrl;
     //many products can have one brand
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductBrandId",referencedColumnName = "id")

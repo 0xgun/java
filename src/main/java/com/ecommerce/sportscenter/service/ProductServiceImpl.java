@@ -43,6 +43,19 @@ public class ProductServiceImpl implements ProductService {
         log.info("Fetched all products");
         return productResponses;
     }
+
+    @Override
+    public List<ProductResponse> searchProductsByName(String string) {
+        log.info("Searching products by name {}", string);
+        //custom query method
+        List<Product> products = productRepository.searchByName(string);
+        //Map
+        List<ProductResponse> productResponses = products.stream()
+                .map(this::convertToProductResponse)
+                .collect(Collectors.toList());
+        return productResponses;
+    }
+
     private ProductResponse convertToProductResponse(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())

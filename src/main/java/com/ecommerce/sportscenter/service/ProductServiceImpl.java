@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -31,7 +32,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getAllProducts() {
-        return List.of();
+        log.info("Fetching all products");
+        List<Product>  productList = productRepository.findAll();
+        List<ProductResponse> productResponses =productList.stream()
+                .map(this::convertToProductResponse)
+                .collect(Collectors.toList());
+        log.info("Fetched all products");
+        return productResponses;
     }
     private ProductResponse convertToProductResponse(Product product) {
         return ProductResponse.builder()

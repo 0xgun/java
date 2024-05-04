@@ -47,6 +47,16 @@ public class ProductController {
         } else if (s!=null && typeId!=null && !s.isEmpty()){
             List<ProductResponse> productResponses = productService.searchProductsByByBrandType(brandId,typeId);
             productResponsePage =new PageImpl<>(productResponses,pageable,productResponses.size());
+        }
+        else if(brandId!=null) {
+            //search by brand
+            List<ProductResponse> productResponses = productService.searchProductsByBrand(brandId);
+            productResponsePage = new PageImpl<>(productResponses, pageable, productResponses.size());
+        }
+        else if(typeId!=null) {
+            //search by type
+            List<ProductResponse> productResponses = productService.searchProductsByType(typeId);
+            productResponsePage = new PageImpl<>(productResponses, pageable, productResponses.size());
         }else{
             //if no such criteria return based on sorting option
             Sort.Direction direction ="asc".equalsIgnoreCase(order)?Sort.Direction.ASC:Sort.Direction.DESC;

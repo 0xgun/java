@@ -12,4 +12,6 @@ public interface ProductService {
     List<ProductResponse> searchProductsByName(String string);
     List<ProductResponse> searchProductsByByBrandTypeAndName(Integer brandId, Integer typeId, String string);
     List<ProductResponse> searchProductsByByBrandType(Integer brandId, Integer typeId);
+    List<ProductResponse> searchProductsByBrand(Integer brandId);
+    List<ProductResponse> searchProductsByType(Integer typeId);
 }

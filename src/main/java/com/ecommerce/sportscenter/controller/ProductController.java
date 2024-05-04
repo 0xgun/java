@@ -35,12 +35,17 @@ public class ProductController {
     public ResponseEntity<Page<ProductResponse>> getAllProducts(
             @PageableDefault(size = 10)Pageable pageable,
             @RequestParam(name="s",required = false) String s,
+            @RequestParam(name="brandId",required = false) Integer brandId,
+            @RequestParam(name="typeId",required = false) Integer typeId,
             @RequestParam(name="sort",defaultValue = "name") String sort,
             @RequestParam(name="order",defaultValue = "asc") String order
             ){
         Page<ProductResponse> productResponsePage;
-        if(s!=null && !s.isEmpty()){
-            List<ProductResponse> productResponses= productService.searchProductsByName(s);
+        if(brandId!=null && typeId!=null && !s.isEmpty()) {
+            List<ProductResponse> productResponses = productService.searchProductsByByBrandTypeAndName(brandId,typeId,s);
+            productResponsePage = new PageImpl<>(productResponses, pageable, productResponses.size());
+        } else if (s!=null && typeId!=null && !s.isEmpty()){
+            List<ProductResponse> productResponses = productService.searchProductsByByBrandType(brandId,typeId);
             productResponsePage =new PageImpl<>(productResponses,pageable,productResponses.size());
         }else{
             //if no such criteria return based on sorting option

@@ -21,66 +21,38 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getProductById(Integer id) {
-        log.info("Fetching product by ID  {}",id);
-        Product product =productRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Product with give id doest not exist"));
+    public ProductResponse getProductById(Integer productId) {
+        log.info("Fetching Product by Id: {}", productId);
+        Product product =productRepository.findById(productId)
+                .orElseThrow(()->new RuntimeException("Product with given id doesn't exist"));
         //now convert the product to product response
         ProductResponse productResponse = convertToProductResponse(product);
-        log.info("Fetched Product by Id: {}", id);
+        log.info("Fetched Product by Id: {}", productId);
         return productResponse;
     }
 
-
     @Override
-    public Page<ProductResponse> getAllProducts(Pageable pageable) {
-        log.info("Fetching all products");
-        //retrive data from db
-        Page<Product>  productPage = productRepository.findAll(pageable);
-        //map
-        Page<ProductResponse> productResponses =productPage
+    public Page<ProductResponse> getProducts(Pageable pageable) {
+        log.info("Fetching products");
+        //Retrieve products from DB
+        Page<Product> productPage = productRepository.findAll(pageable);
+        //Map
+        Page<ProductResponse> productResponses = productPage
                 .map(this::convertToProductResponse);
         log.info("Fetched all products");
         return productResponses;
     }
 
     @Override
-    public List<ProductResponse> searchProductsByName(String s) {
-        log.info("Searching products by name {}", s);
-        //custom query method
-        List<Product> products = productRepository.searchByName(s);
-        //Map
-        List<ProductResponse> productResponses = products.stream()
-                .map(this::convertToProductResponse)
-                .collect(Collectors.toList());
-        return productResponses;
-    }
-
-    @Override
-    public List<ProductResponse> searchProductsByByBrandTypeAndName(Integer brandId, Integer typeId, String s) {
-        log.info("Searching products by BrandID :{} and TypeID :{} and name:{}", brandId,typeId,s);
-        //custom query method
-        List<Product> products = productRepository.searchByBrandTypeAndName(brandId,typeId,s);
+    public List<ProductResponse> searchProductsByName(String keyword) {
+        log.info("Searching product(s) by name: {}", keyword);
+        //Call the custom query Method
+        List<Product> products = productRepository.searchByName(keyword);
         //Map
         List<ProductResponse> productResponses = products.stream()
                 .map(this::convertToProductResponse)
                 .collect(Collectors.toList());
         log.info("Fetched all products");
-
-        return productResponses;
-    }
-
-    @Override
-    public List<ProductResponse> searchProductsByByBrandType(Integer brandId, Integer typeId) {
-        log.info("Searching products by BrandID : {} and TypeID : {}", brandId,typeId);
-        //custom query method
-        List<Product> products = productRepository.searchByBrandAndType(brandId,typeId);
-        //Map
-        List<ProductResponse> productResponses = products.stream()
-                .map(this::convertToProductResponse)
-                .collect(Collectors.toList());
-        log.info("Fetched all products");
-
         return productResponses;
     }
 
@@ -110,6 +82,31 @@ public class ProductServiceImpl implements ProductService {
         return productResponses;
     }
 
+    @Override
+    public List<ProductResponse> searchProductsByBrandandType(Integer brandId, Integer typeId) {
+        log.info("Searching product(s) by brandId: {}, and typeId: {}", brandId, typeId);
+        //Call the custom query Method
+        List<Product> products = productRepository.searchByBrandAndType(brandId, typeId);
+        //Map
+        List<ProductResponse> productResponses = products.stream()
+                .map(this::convertToProductResponse)
+                .collect(Collectors.toList());
+        log.info("Fetched all products");
+        return productResponses;
+    }
+
+    @Override
+    public List<ProductResponse> searchProductsByBrandTypeAndName(Integer brandId, Integer typeId, String keyword) {
+        log.info("Searching product(s) by brandId: {}, typeId: {} and keyword: {}", brandId, typeId, keyword);
+        //Call the custom query Method
+        List<Product> products = productRepository.searchByBrandTypeAndName(brandId, typeId, keyword);
+        //Map
+        List<ProductResponse> productResponses = products.stream()
+                .map(this::convertToProductResponse)
+                .collect(Collectors.toList());
+        log.info("Fetched all products");
+        return productResponses;
+    }
 
     private ProductResponse convertToProductResponse(Product product) {
         return ProductResponse.builder()

@@ -6,9 +6,13 @@ spring:
     url: jdbc:mysql://localhost:3306/sportscenter
     username: root
     password: password
+    jpa:
+      show-sql: true
+
   application:
     name: SportsCenter
   jpa:
+
     hibernate:
       ddl-auto: update
       naming:
